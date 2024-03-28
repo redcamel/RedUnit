@@ -1,0 +1,68 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    background:#000;
+    color:#fff;
+    overflow-x: hidden;
+    font-size: 12px;
+}
+.red-unit-total-state-wrap{
+}
+.red-unit-total-state-box{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap:6px
+}
+.red-unit-iframe-wrap{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    line-height: 1;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.red-unit-iframe-title{
+    background: rgb(77, 71, 134);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-decoration: none;
+    color :#fff
+}
+.red-unit-iframe-state-box{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap:6px;
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+}
+
+.red-unit-iframe{
+    border: 0;
+    width: 100%;
+}
+
+
+::-webkit-scrollbar {
+    width: 6px; /* 스크롤바의 넓이 */
+}
+
+::-webkit-scrollbar-track {
+    background: #000; /* 스크롤바의 전체. */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333; /* 스크롤바의 움직이는 부분. */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #444; /* 스크롤바를 호버하면 움직이는 부분의 색변화 */
+}
