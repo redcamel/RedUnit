@@ -1,18 +1,31 @@
-import * as RedUnit from '../../dist'
+import RedUnit from '../../dist'
 
-RedUnit.defineGroup(
+const redUnit = new RedUnit()
+redUnit.testGroup(
 	'테스트슈트',
-	(runner)=>{
-		let i = Math.ceil(Math.random() * 50)
+	(runner) => {
+		let i = 10
 		while (i--) {
-			runner.define(`test title ${i}`, {
-				test: function (run) {
-					console.log('unitTest',i)
+			runner.define(`test title ${i}`, function (run) {
+					console.log('unitTest', i)
 					run(Math.random() < Math.random())
 				},
-				expect: true
-			})
+				true
+			)
 		}
 	}
 )
-
+redUnit.testGroup(
+	'테스트슈트2',
+	(runner) => {
+		let i = 10
+		while (i--) {
+			runner.define(`test title ${i}`, function (run) {
+					console.log('unitTest', i)
+					run(Math.random() < Math.random())
+				},
+				true
+			)
+		}
+	}
+)

@@ -6,7 +6,7 @@ import {string} from 'rollup-plugin-string'
 import postcss from 'rollup-plugin-postcss'
 export default [
 	{
-		input: './src/index.ts',
+		input: './src/RedUnit.ts',
 		output: {
 			file: './dist/index.js',
 			format: 'es',
@@ -29,7 +29,7 @@ export default [
 	},
 
 	{
-		input: './src/index.ts',
+		input: './src/RedUnit.ts',
 		output: {
 			file: './dist/index.min.js',
 			format: "es",

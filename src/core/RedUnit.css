@@ -7,6 +7,11 @@ html, body {
     font-size: 12px;
 }
 
+.red-unit-root {
+    display: flex;
+    flex-direction: column;
+
+}
 .red-unit-total-state-wrap {
 }
 
@@ -45,13 +50,31 @@ html, body {
 }
 
 /**/
+.red-unit-test-runner-root{
+    display: flex;
+    flex-direction: column;
+}
+.red-unit-test-group-title-wrap{
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    align-items: stretch;
+    gap: 6px;
+    padding: 16px;
+}
+.red-unit-test-group-title{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap: 6px;
+}
 .red-unit-test-suite-state-box {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     white-space: nowrap;
     gap: 6px;
-    width: 100%;
     padding: 10px;
     background: rgba(255, 255, 255, 0.1);
 }

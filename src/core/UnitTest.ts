@@ -3,12 +3,12 @@ import createDomElement from "./createDomElement";
 
 class UnitTest {
 	#dom;
-	#test;
+	#testFunc;
 	#expect;
 
-	constructor(title, testDefine) {
-		this.#test = testDefine.test;
-		this.#expect = testDefine.expect;
+	constructor(title, testFunc,expectValue) {
+		this.#testFunc = testFunc;
+		this.#expect = expectValue;
 		this.#initializeDom(title);
 		dispatchEvent(new CustomEvent('ADD_UNIT_NUM'));
 	}
@@ -22,7 +22,7 @@ class UnitTest {
 	}
 
 	execute(runner) {
-		this.#test((resultValue) => {
+		this.#testFunc((resultValue) => {
 			const isPass = this.#expect === resultValue;
 			this.determinePassFailAndDispatchEvent(isPass);
 			this.#dom.querySelector('.result').textContent = `${resultValue}`;
@@ -42,7 +42,7 @@ class UnitTest {
 		this.#dom.innerHTML = `
 			<div class="red-unit-test-wrap">
 				<div class="red-unit-test-title">${title}</div>
-				<div>${this.#test}</div>
+				<div>${this.#testFunc}</div>
 				<div class="red-unit-test-result-wrap">
 					<div><span>expect</span>: ${JSON.stringify(this.#expect)}</div>
 					<div><span>result</span>: <span class="result"></span></div>

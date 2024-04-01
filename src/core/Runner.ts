@@ -1,29 +1,33 @@
+import RedUnit from "../RedUnit";
 import UnitTest from "./UnitTest";
 
 class Runner {
 	#passCount: number = 0
 	#failCount: number = 0
-	#list: UnitTest[] = []
 	#ingIndex: number = 0
+	#list: UnitTest[] = []
 	#dom
 	#state
+	#redUnit: RedUnit
 
-	constructor(title) {
+	constructor(redUnit: RedUnit, title: string, initFunc) {
+		this.#redUnit = redUnit
 		this.#dom = document.createElement('div')
+		this.#dom.className = 'red-unit-test-runner-root'
+
 		this.#state = document.createElement('div')
 		this.#dom.appendChild(this.#state)
 		document.body.appendChild(this.#dom)
+		initFunc(this)
+		this.#next()
 	}
 
-	define = (title, testDefine) => {
-		const t0 = new UnitTest(title, testDefine)
+	define = (title, testFunc, expectValue) => {
+		const t0 = new UnitTest(title, testFunc, expectValue)
 		this.#list.push(t0)
 		this.#dom.appendChild(t0.dom)
 		this.#updateState()
-	}
-
-	start() {
-		this.#next()
+		this.#redUnit.increaseTotalCount()
 	}
 
 	run(result) {
@@ -32,6 +36,7 @@ class Runner {
 		this.#updateState()
 		//
 		this.#ingIndex++
+		this.#redUnit.updateState(result)
 		if (this.#ingIndex < this.#list.length) {
 			this.#next()
 		}
