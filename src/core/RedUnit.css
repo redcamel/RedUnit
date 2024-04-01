@@ -1,30 +1,33 @@
-html,body{
+html, body {
     margin: 0;
     padding: 0;
-    background:#000;
-    color:#fff;
+    background: #000;
+    color: #fff;
     overflow-x: hidden;
     font-size: 12px;
 }
-.red-unit-total-state-wrap{
+
+.red-unit-total-state-wrap {
 }
-.red-unit-total-state-box{
+
+.red-unit-total-state-box {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     white-space: nowrap;
-    gap:6px
+    gap: 6px
 }
-.red-unit-iframe-wrap{
+
+.red-unit-iframe-wrap {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     line-height: 1;
     overflow: hidden;
     cursor: pointer;
 }
 
-.red-unit-iframe-title{
+.red-unit-iframe-title {
     background: rgb(77, 71, 134);
     line-height: 1;
     display: flex;
@@ -32,24 +35,52 @@ html,body{
     justify-content: center;
     padding: 10px;
     text-decoration: none;
-    color :#fff
-}
-.red-unit-iframe-state-box{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    white-space: nowrap;
-    gap:6px;
-    width: 100%;
-    padding: 10px;
-    background: rgba(255,255,255,0.1);
+    color: #fff
 }
 
-.red-unit-iframe{
+
+.red-unit-iframe {
     border: 0;
     width: 100%;
 }
 
+/**/
+.red-unit-test-suite-state-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.red-unit-test-wrap {
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    gap: 4px
+}
+
+.red-unit-test-title {
+    font-size: 14px;
+}
+
+.red-unit-test-result-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.red-unit-test-result-wrap > .pass-fail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 6px;
+    background: rgba(255, 255, 255, 0.1);
+
+}
 
 ::-webkit-scrollbar {
     width: 6px; /* 스크롤바의 넓이 */
