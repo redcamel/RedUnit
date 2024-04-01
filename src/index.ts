@@ -1,7 +1,7 @@
 import './core/RedUnit.css'
 import RedUnitIframe from "./core/page/RedUnitIframe";
 import RedUnitTotalState from "./core/page/RedUnitTotalState";
-import TestSuite from "./core/TestSuite";
+import Runner from "./core/Runner";
 
 const init = (testName: string, testList: { title: string, src: string }[]) => {
 	console.log('testList', testList)
@@ -11,9 +11,9 @@ const init = (testName: string, testList: { title: string, src: string }[]) => {
 	});
 }
 const defineGroup = (title, initFunc) => {
-	const testSuite = new TestSuite(title)
-	initFunc(testSuite)
-	testSuite.run()
+	const runner = new Runner(title)
+	initFunc(runner)
+	runner.start()
 }
 export {
 	init,

@@ -1,6 +1,6 @@
 import UnitTest from "./UnitTest";
 
-class TestSuite {
+class Runner {
 	#passCount: number = 0
 	#failCount: number = 0
 	#list: UnitTest[] = []
@@ -15,26 +15,30 @@ class TestSuite {
 		document.body.appendChild(this.#dom)
 	}
 
-	test = (title, testDefine) => {
+	define = (title, testDefine) => {
 		const t0 = new UnitTest(title, testDefine)
 		this.#list.push(t0)
 		this.#dom.appendChild(t0.dom)
 		this.#updateState()
 	}
 
-	run() {
-		const result = this.#list[this.#ingIndex].run()
+	start() {
+		this.#next()
+	}
+
+	run(result) {
 		if (result) this.#passCount++
 		else this.#failCount++
 		this.#updateState()
 		//
 		this.#ingIndex++
+		if (this.#ingIndex < this.#list.length) {
+			this.#next()
+		}
 	}
 
-	next() {
-		if (this.#ingIndex < this.#list.length) {
-			this.run()
-		}
+	#next() {
+		this.#list[this.#ingIndex].execute(this)
 	}
 
 	#updateState() {
@@ -48,4 +52,4 @@ class TestSuite {
 	}
 }
 
-export default TestSuite
+export default Runner

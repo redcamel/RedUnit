@@ -8,7 +8,7 @@ class RedUnitIframe {
 
 	constructor(title: string, src: string, totalState: RedUnitTotalState) {
 		this.createAndAppendElements(title, src);
-		this.addUnitNumListener(totalState)
+		this.addListeners(totalState)
 	}
 
 	createAndAppendElements(title: string, src: string) {
@@ -20,7 +20,7 @@ class RedUnitIframe {
 		document.body.appendChild(this.#wrap);
 	}
 
-	addUnitNumListener(totalState: RedUnitTotalState) {
+	addListeners(totalState: RedUnitTotalState) {
 		this.#iframe.contentWindow.addEventListener(CONST_COUNT_EVENT.ADD_UNIT_NUM, () => {
 			totalState.increaseUnitNum()
 		})

@@ -3,8 +3,15 @@ import createDomElement from "./createDomElement";
 
 class UnitTest {
 	#dom;
-	#run;
+	#test;
 	#expect;
+
+	constructor(title, testDefine) {
+		this.#test = testDefine.test;
+		this.#expect = testDefine.expect;
+		this.#initializeDom(title);
+		dispatchEvent(new CustomEvent('ADD_UNIT_NUM'));
+	}
 
 	get dom() {
 		return this.#dom;
@@ -14,11 +21,20 @@ class UnitTest {
 		return this.#expect;
 	}
 
-	constructor(title, testDefine) {
-		this.#run = testDefine.run;
-		this.#expect = testDefine.expect;
-		this.#initializeDom(title);
-		dispatchEvent(new CustomEvent('ADD_UNIT_NUM'));
+	execute(runner) {
+		this.#test((resultValue) => {
+			const isPass = this.#expect === resultValue;
+			this.determinePassFailAndDispatchEvent(isPass);
+			this.#dom.querySelector('.result').textContent = `${resultValue}`;
+			this.#dom.querySelector('.pass-fail').textContent = `${resultValue}`;
+			runner.run(resultValue)
+		});
+	}
+
+	determinePassFailAndDispatchEvent(isPass: boolean) {
+		console.log(isPass)
+		const event = isPass ? CONST_COUNT_EVENT.PASS_UNIT_NUM : CONST_COUNT_EVENT.FAIL_UNIT_NUM;
+		dispatchEvent(new CustomEvent(event));
 	}
 
 	#initializeDom(title) {
@@ -26,7 +42,7 @@ class UnitTest {
 		this.#dom.innerHTML = `
 			<div class="red-unit-test-wrap">
 				<div class="red-unit-test-title">${title}</div>
-				<div>${this.#run}</div>
+				<div>${this.#test}</div>
 				<div class="red-unit-test-result-wrap">
 					<div><span>expect</span>: ${JSON.stringify(this.#expect)}</div>
 					<div><span>result</span>: <span class="result"></span></div>
@@ -37,20 +53,6 @@ class UnitTest {
 			</div>
 		`;
 		document.body.appendChild(this.#dom);
-	}
-
-	run() {
-		const resultValue = this.#run();
-		const isPass = this.#expect === resultValue;
-		this.determinePassFailAndDispatchEvent(isPass);
-		this.#dom.querySelector('.result').textContent = `${resultValue}`;
-		this.#dom.querySelector('.pass-fail').textContent = `${resultValue}`;
-		return resultValue;
-	}
-
-	determinePassFailAndDispatchEvent(isPass: boolean) {
-		const event = isPass ? CONST_COUNT_EVENT.PASS_UNIT_NUM : CONST_COUNT_EVENT.FAIL_UNIT_NUM;
-		dispatchEvent(new CustomEvent(event));
 	}
 }
 
