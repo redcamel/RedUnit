@@ -1,49 +1,52 @@
 import createDomElement from "../createDomElement";
 
-class RedUnitTotalState {
-	#dom: HTMLDivElement
+class TotalPageState {
+	#rootDom: HTMLDivElement
+	//
 	#passTestCount: number = 0
 	#failTestCount: number = 0
 	#totalTestCount: number = 0
+	//
 	#passPageCount: number = 0
 	#failPageCount: number = 0
 	#totalPageCount: number = 0
+	//
 	#title: string
 
 	constructor(title: string, testList: { title: string, src: string }[]) {
 		this.#title = title
 		this.#totalPageCount = testList.length
-		this.#dom = createDomElement();
+		this.#rootDom = createDomElement();
 		this.#render();
-		document.body.appendChild(this.#dom);
+		document.body.appendChild(this.#rootDom);
 	}
 
-	increaseUnitNum() {
+	increaseTotalUnitNum() {
 		this.#totalTestCount++
 		this.#render()
 	}
 
-	increasePassUnitNum() {
+	increaseTotalPassUnitNum() {
 		this.#passTestCount++
 		this.#render()
 	}
 
-	increaseFailUnitNum() {
+	increaseTotalFailUnitNum() {
 		this.#failTestCount++
 		this.#render()
 	}
 
 	#render() {
-		this.#dom.innerHTML = `
+		this.#rootDom.innerHTML = `
         <div>${this.#title}</div>
         <div class="red-unit-total-state-box">
-          <div>page: ${this.#passTestCount}</div>/<div>fail: ${this.#failTestCount}</div>/<div>total: ${this.#totalTestCount}</div>
+          <div>Pass: ${this.#passTestCount}</div>/<div>Fail: ${this.#failTestCount}</div>/<div>Total: ${this.#totalTestCount}</div>
         </div>
         <div class="red-unit-total-state-box">
-          <div>pass page: ${this.#passPageCount}</div>/<div>fail page: ${this.#failPageCount}</div>/ <div>total page: <span class="unit-total-count">${this.#totalPageCount}</span></div>
+          <div>Pass page: ${this.#passPageCount}</div>/<div>Fail page: ${this.#failPageCount}</div>/ <div>Total page: <span class="unit-total-count">${this.#totalPageCount}</span></div>
         </div>
     `
 	}
 }
 
-export default RedUnitTotalState
+export default TotalPageState

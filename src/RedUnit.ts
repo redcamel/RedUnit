@@ -1,8 +1,8 @@
 import './core/RedUnit.css'
-import RedUnitIframe from "./core/page/RedUnitIframe";
-import RedUnitTotalState from "./core/page/RedUnitTotalState";
+import createDomElement from "./core/createDomElement";
+import PageContainer from "./core/page/PageContainer";
+import TotalPageState from "./core/page/TotalPageState";
 import Runner from "./core/Runner";
-
 class RedUnit {
 	#passCount: number = 0
 	#failCount: number = 0
@@ -13,33 +13,20 @@ class RedUnit {
 	#title: string
 	#stateDom
 
-	constructor() {
-	}
-
-	testGroup = (title, initFunc) => {
+	constructor(title: string) {
 		this.#title = title
-		this.#initDom()
-		new Runner(this, title, initFunc)
 	}
 
-	#initDom() {
-		if (!this.#rootDom) {
-			this.#rootDom = document.createElement('div')
-			this.#rootDom.className = 'red-unit-root'
-			{
-				this.#titleRootDom = document.createElement('div')
-				this.#titleRootDom.className = 'red-unit-test-group-title-wrap'
-				this.#titleDom = document.createElement('div')
-				this.#titleDom.className = 'red-unit-test-group-title'
-				this.#titleDom.innerHTML = this.#title
-				this.#stateDom = document.createElement('div')
-				this.#stateDom.className ='red-unit-test-suite-state-box'
-				this.#titleRootDom.appendChild(this.#titleDom)
-				this.#titleRootDom.appendChild(this.#stateDom)
-			}
-			this.#rootDom.appendChild(this.#titleRootDom)
-			document.body.appendChild(this.#rootDom)
-		}
+	static pageLoader(testName: string, testList: { title: string, src: string }[]) {
+		const totalState = new TotalPageState(testName, testList)
+		testList.forEach(item => {
+			new PageContainer(item.title, item.src, totalState)
+		});
+	}
+
+	testGroup = (groupTitle: string, initFunc) => {
+		this.#initDom()
+		new Runner(this, groupTitle, initFunc)
 	}
 
 	increaseTotalCount() {
@@ -57,11 +44,20 @@ class RedUnit {
 		`
 	}
 
-	static pageLoader(testName: string, testList: { title: string, src: string }[]) {
-		const totalState = new RedUnitTotalState(testName, testList)
-		testList.forEach(item => {
-			new RedUnitIframe(item.title, item.src, totalState)
-		});
+	#initDom() {
+		if (!this.#rootDom) {
+			this.#rootDom = createDomElement('red-unit-root')
+			{
+				this.#titleRootDom = createDomElement('red-unit-test-group-title-wrap')
+				this.#titleDom = createDomElement('red-unit-test-group-title')
+				this.#titleDom.innerHTML = this.#title
+				this.#stateDom = createDomElement('red-unit-test-suite-state-box')
+				this.#titleRootDom.appendChild(this.#titleDom)
+				this.#titleRootDom.appendChild(this.#stateDom)
+			}
+			this.#rootDom.appendChild(this.#titleRootDom)
+			document.body.appendChild(this.#rootDom)
+		}
 	}
 }
 

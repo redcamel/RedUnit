@@ -1,4 +1,5 @@
 import RedUnit from "../RedUnit";
+import createDomElement from "./createDomElement";
 import UnitTest from "./UnitTest";
 
 class Runner {
@@ -6,26 +7,33 @@ class Runner {
 	#failCount: number = 0
 	#ingIndex: number = 0
 	#list: UnitTest[] = []
-	#dom
-	#state
+	#rootDom
+	#titleDom
+	#stateDom
+	#testContainerDom
 	#redUnit: RedUnit
+	#groupTitle: string
 
-	constructor(redUnit: RedUnit, title: string, initFunc) {
+	constructor(redUnit: RedUnit, groupTitle: string, initFunc) {
 		this.#redUnit = redUnit
-		this.#dom = document.createElement('div')
-		this.#dom.className = 'red-unit-test-runner-root'
-
-		this.#state = document.createElement('div')
-		this.#dom.appendChild(this.#state)
-		document.body.appendChild(this.#dom)
+		this.#groupTitle = groupTitle
+		this.#rootDom = createDomElement('red-unit-test-runner-root')
+		this.#titleDom = createDomElement()
+		this.#titleDom.innerHTML = this.#groupTitle
+		this.#stateDom = createDomElement()
+		this.#testContainerDom = createDomElement('red-unit-test-runner-test-container')
+		this.#rootDom.appendChild(this.#titleDom)
+		this.#rootDom.appendChild(this.#stateDom)
+		this.#rootDom.appendChild(this.#testContainerDom)
+		document.body.appendChild(this.#rootDom)
 		initFunc(this)
 		this.#next()
 	}
 
-	define = (title, testFunc, expectValue) => {
+	defineTest = (title, testFunc, expectValue) => {
 		const t0 = new UnitTest(title, testFunc, expectValue)
 		this.#list.push(t0)
-		this.#dom.appendChild(t0.dom)
+		this.#testContainerDom.appendChild(t0.dom)
 		this.#updateState()
 		this.#redUnit.increaseTotalCount()
 	}
@@ -47,7 +55,7 @@ class Runner {
 	}
 
 	#updateState() {
-		this.#state.innerHTML = `
+		this.#stateDom.innerHTML = `
 			<div class="red-unit-test-suite-state-box">
 				<div>pass : <span class="unit-pass-count">${this.#passCount}</span></div>
 				/<div>fail : <span class="unit-fail-count">${this.#failCount}</span></div>

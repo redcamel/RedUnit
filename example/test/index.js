@@ -1,12 +1,12 @@
 import RedUnit from '../../dist'
 
-const redUnit = new RedUnit()
+const redUnit = new RedUnit('Test PageTitle')
 redUnit.testGroup(
-	'테스트슈트',
+	'testGroup 1',
 	(runner) => {
 		let i = 10
 		while (i--) {
-			runner.define(`test title ${i}`, function (run) {
+			runner.defineTest(`test title ${i}`, function (run) {
 					console.log('unitTest', i)
 					run(Math.random() < Math.random())
 				},
@@ -16,11 +16,11 @@ redUnit.testGroup(
 	}
 )
 redUnit.testGroup(
-	'테스트슈트2',
+	'testGroup 2',
 	(runner) => {
 		let i = 10
 		while (i--) {
-			runner.define(`test title ${i}`, function (run) {
+			runner.defineTest(`test title ${i}`, function (run) {
 					console.log('unitTest', i)
 					run(Math.random() < Math.random())
 				},
