@@ -62,7 +62,7 @@ class GroupRunner {
 		this.#titleDom.innerHTML = `${this.#groupTitle} - <span style="color:${this.#failCount ? 'red' : ''}">${ingYn ? 'ing...' : this.#failCount ? 'Fail!' : 'All Pass!'}</span>`
 
 		this.#stateDom.innerHTML = `
-			<div class="red-unit-test-container-state-box" style="background:${this.#failCount ? 'red' : 'green'}">
+			<div class="red-unit-test-container-state-box" style="background:${this.#failCount ? 'red' : ''}">
 				<div>PASS : <span class="unit-pass-count">${this.#passCount.toLocaleString()}</span></div>
 				/<div>FAIL : <span class="unit-fail-count">${this.#failCount.toLocaleString()}</span></div>
 				/<div>TOTAL : <span class="unit-total-count">${this.#list.length.toLocaleString()}</span></div>

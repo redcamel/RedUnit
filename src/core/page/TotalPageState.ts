@@ -50,7 +50,7 @@ class TotalPageState {
 		const ingYn = this.#totalTestCount !== (this.#passTestCount + this.#failTestCount)
 		this.#rootDom.innerHTML = `
         <div class="red-unit-total-title">
-        	${this.#title} - <span style="color:${ingYn ? 'white' : this.#failTestCount ? 'red' : ''}">${ingYn ? 'ing...' : this.#failTestCount ? 'Fail!' : 'All Pass!!!'}</span>
+        	${this.#title} - <span style="color:${ingYn ? 'white' : this.#failTestCount ? 'red' : '#f2a971'}">${ingYn ? 'ing...' : this.#failTestCount ? 'Fail!' : 'All Pass!!!'}</span>
 				</div>
         <div class="red-unit-total-state-box">
           <div>Pass: ${this.#passTestCount.toLocaleString()}</div>

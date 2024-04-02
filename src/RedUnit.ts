@@ -48,7 +48,7 @@ class RedUnit {
 		//
 		const ingYn = this.#totalCount !== (this.#passCount + this.#failCount)
 		this.#titleDom.innerHTML = `${this.#title} - <span style="color:${ingYn ? 'white' : this.#failCount ? 'red' : ''}">${ingYn ? 'ing...' : this.#failCount ? 'Fail!' : 'All Pass!!'}</span>`
-		this.#stateDom.style.background = this.#failCount ? 'red' : 'green'
+		this.#stateDom.style.background = this.#failCount ? 'red' : ''
 		//
 		this.#stateDom.innerHTML = `
 				<div>pass : <span class="unit-pass-count">${this.#passCount.toLocaleString()}</span></div>
