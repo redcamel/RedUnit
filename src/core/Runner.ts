@@ -18,10 +18,12 @@ class Runner {
 		this.#redUnit = redUnit
 		this.#groupTitle = groupTitle
 		this.#rootDom = createDomElement('red-unit-test-runner-root')
-		this.#titleDom = createDomElement()
+		this.#titleDom = createDomElement('red-unit-test-runner-test-container-title')
 		this.#titleDom.innerHTML = this.#groupTitle
 		this.#stateDom = createDomElement()
 		this.#testContainerDom = createDomElement('red-unit-test-runner-test-container')
+		const onlyRootState = window.self !== window.top
+		if(onlyRootState) this.#rootDom.style.display = 'none'
 		this.#rootDom.appendChild(this.#titleDom)
 		this.#rootDom.appendChild(this.#stateDom)
 		this.#rootDom.appendChild(this.#testContainerDom)
@@ -46,7 +48,9 @@ class Runner {
 		this.#ingIndex++
 		this.#redUnit.updateState(result)
 		if (this.#ingIndex < this.#list.length) {
-			this.#next()
+			requestAnimationFrame(()=>{
+				this.#next()
+			})
 		}
 	}
 
@@ -55,11 +59,14 @@ class Runner {
 	}
 
 	#updateState() {
+		const ingYn = this.#list.length !== (this.#passCount + this.#failCount)
+		this.#titleDom.innerHTML = `${this.#groupTitle} - <span style="color:${this.#failCount ? 'red' : ''}">${ingYn ? 'ing...' : this.#failCount ? 'Fail!' : 'All Pass!'}</span>`
+
 		this.#stateDom.innerHTML = `
-			<div class="red-unit-test-suite-state-box" style="background:${this.#failCount ? 'red' : 'green'}">
-				<div>PASS : <span class="unit-pass-count">${this.#passCount}</span></div>
-				/<div>FAIL : <span class="unit-fail-count">${this.#failCount}</span></div>
-				/<div>TOTAL : <span class="unit-total-count">${this.#list.length}</span></div>
+			<div class="red-unit-test-container-state-box" style="background:${this.#failCount ? 'red' : 'green'}">
+				<div>PASS : <span class="unit-pass-count">${this.#passCount.toLocaleString()}</span></div>
+				/<div>FAIL : <span class="unit-fail-count">${this.#failCount.toLocaleString()}</span></div>
+				/<div>TOTAL : <span class="unit-total-count">${this.#list.length.toLocaleString()}</span></div>
 			</div>
 		`
 	}

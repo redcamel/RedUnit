@@ -8,6 +8,7 @@ class UnitTest {
 	#testFunc;
 	#expect;
 	#isPass:boolean;
+	#openYn:boolean;
 
 	constructor(title, testFunc, expectValue) {
 		this.#testFunc = testFunc;
@@ -23,6 +24,7 @@ class UnitTest {
 	execute(runner) {
 		this.#testFunc((resultValue) => {
 			this.#isPass = this.#expect === resultValue;
+			this.#openYn = !this.#isPass;
 			this.determinePassFailAndDispatchEvent(this.#isPass);
 			this.#dom.querySelector('.result').textContent = `${resultValue}`;
 			this.#dom.querySelector('.pass-fail').textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
@@ -34,6 +36,11 @@ class UnitTest {
 	}
 	#updateDisplayByResult(){
 		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = `${this.#isPass ? 'none' : ''}`;
+		this.#dom.querySelector('.red-unit-test-wrap').style.background = `${this.#isPass ? '' : '#2d0000'}`;
+		this.#dom.querySelector('.red-unit-test-title-open-close').innerHTML = `${this.#openYn ? 'close' : 'open'}`;
+
+		console.log(this.#dom.querySelector('.red-unit-test-code-wrap').style.display)
+		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = this.#openYn ? '' : 'none'
 	}
 
 	determinePassFailAndDispatchEvent(isPass: boolean) {
@@ -46,7 +53,10 @@ class UnitTest {
 		this.#dom = createDomElement();
 		this.#dom.innerHTML = ` 
 			<div class="red-unit-test-wrap">
-				<div class="red-unit-test-title">${title}</div>
+				<div class="red-unit-test-title-wrap">
+					<div class="red-unit-test-title">${title}</div>
+					<div class="red-unit-test-title-open-close"></div>
+				</div>
 				<pre class="red-unit-test-code-wrap" style="display: none">${formatCodeSnippet(`${this.#testFunc}`)}</pre>
 				<div class="red-unit-test-result-wrap">
 					<span class="pass-fail"></span>
@@ -57,6 +67,11 @@ class UnitTest {
 			</div> 
 		`;
 		document.body.appendChild(this.#dom);
+
+		this.#dom.querySelector('.red-unit-test-title-wrap').addEventListener('click',()=>{
+			this.#openYn = !this.#openYn
+			this.#updateDisplayByResult()
+		})
 	}
 }
 

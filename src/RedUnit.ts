@@ -9,6 +9,7 @@ class RedUnit {
 	#passCount: number = 0
 	#failCount: number = 0
 	#totalCount: number = 0
+	#groupCount: number = 0
 	#rootDom
 	#titleRootDom
 	#titleDom
@@ -19,15 +20,23 @@ class RedUnit {
 		this.#title = title
 	}
 
-	static pageLoader(testName: string, testList: { title: string, src: string }[]) {
+	static pageLoader(testName: string, testList: { title: string, src: string }[], parentDom) {
 		const totalState = new TotalPageState(testName, testList)
+		if(!parentDom) {
+			parentDom = createDomElement('red-unit-pages-root')
+			document.body.appendChild(parentDom)
+		}
+
 		testList.forEach(item => {
-			new PageContainer(item.title, item.src, totalState)
+			const t0 = new PageContainer(item.title, item.src, totalState)
+			parentDom.appendChild(t0.wrap)
 		});
+
 	}
 
 	testGroup = (groupTitle: string, initFunc) => {
 		this.#initDom()
+		this.#groupCount++
 		new Runner(this, groupTitle, initFunc)
 	}
 
@@ -39,10 +48,15 @@ class RedUnit {
 		if (result) this.#passCount++
 		else this.#failCount++
 		//
+		const ingYn = this.#totalCount !== (this.#passCount + this.#failCount)
+		this.#titleDom.innerHTML = `${this.#title} - <span style="color:${ingYn ? 'white' : this.#failCount ? 'red' : ''}">${ingYn ? 'ing...' : this.#failCount ? 'Fail!' : 'All Pass!!'}</span>`
+		this.#stateDom.style.background = this.#failCount ? 'red' : 'green'
+		//
 		this.#stateDom.innerHTML = `
-				<div>pass : <span class="unit-pass-count">${this.#passCount}</span></div>
-				/<div>fail : <span class="unit-fail-count">${this.#failCount}</span></div>
-			  /<div>total : <span class="unit-total-count">${this.#totalCount}</span></div>	
+				<div>pass : <span class="unit-pass-count">${this.#passCount.toLocaleString()}</span></div>
+				/<div>fail : <span class="unit-fail-count">${this.#failCount.toLocaleString()}</span></div>
+			  /<div>total : <span class="unit-total-count">${this.#totalCount.toLocaleString()}</span></div>	
+			  ${this.#groupCount > 1 ? `/<div>group : <span class="unit-group-count">${this.#groupCount.toLocaleString()}</span></div>` : ''}	
 		`
 	}
 
@@ -50,10 +64,10 @@ class RedUnit {
 		if (!this.#rootDom) {
 			this.#rootDom = createDomElement('red-unit-root')
 			{
-				this.#titleRootDom = createDomElement('red-unit-test-group-title-wrap')
-				this.#titleDom = createDomElement('red-unit-test-group-title')
+				this.#titleRootDom = createDomElement('red-unit-test-runner-title-wrap')
+				this.#titleDom = createDomElement('red-unit-test-runner-title')
 				this.#titleDom.innerHTML = this.#title
-				this.#stateDom = createDomElement('red-unit-test-suite-state-box')
+				this.#stateDom = createDomElement('red-unit-test-runner-state-box')
 				this.#titleRootDom.appendChild(this.#titleDom)
 				this.#titleRootDom.appendChild(this.#stateDom)
 			}
