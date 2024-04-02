@@ -28,7 +28,7 @@ export default [
 					tsconfig: 'tsconfig.json'
 				}
 			),
-			// terser(),
+			terser(),
 		]
 	},
 
