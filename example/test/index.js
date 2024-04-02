@@ -1,34 +1,38 @@
 import RedUnit from '../../dist/'
 
 const redUnit = new RedUnit('Test PageTitle')
+
 redUnit.testGroup(
-	'testGroup 1',
+	'JavaScript Default Values Test Group',
 	(runner) => {
-		let i = 10
-		while (i--) {
-			runner.defineTest(`test title ${i} sdfsdfsdfsdfsdfsdfsdf sdfsd sdf sdf`, function (run) {
-					/**
-					 * test
-					 */
-					// test
-					run(true)
-				},
-				true
-			)
-		}
+		runner.defineTest('Test undefined', function (run) {
+			let undefinedTest = typeof undefinedVariable === "undefined";
+			run(undefinedTest);
+		}, true);
+
+		runner.defineTest('Test null', function (run) {
+			let nullTest = null === null;
+			run(nullTest);
+		}, true);
+
+		runner.defineTest('Test 0', function (run) {
+			let zeroTest = 0 === 0;
+			run(zeroTest);
+		}, true);
+
+		runner.defineTest('Test ""', function (run) {
+			let emptyStringTest = "" === "";
+			run(emptyStringTest);
+		}, true);
+
+		runner.defineTest('Test NaN', function (run) {
+			let NaNTest = isNaN(NaN);
+			run(NaNTest);
+		}, true);
+
+		runner.defineTest('Test false', function (run) {
+			let falseTest = false === false;
+			run(falseTest);
+		}, true);
 	}
-)
-redUnit.testGroup(
-	'testGroup 2',
-	(runner) => {
-		let i = 10
-		while (i--) {
-			runner.defineTest(`test title ${i}`, function (run) {
-					// run(Math.random() < Math.random())
-					run(true)
-				},
-				true
-			)
-		}
-	}
-)
+);

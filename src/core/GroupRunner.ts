@@ -40,12 +40,13 @@ class GroupRunner {
 	}
 
 	run(result:boolean) {
-		if (result) this.#passCount++
+		const passYn = result === this.#list[this.#ingIndex].expectValue
+		if (passYn) this.#passCount++
 		else this.#failCount++
 		this.#updateState()
 		//
 		this.#ingIndex++
-		this.#redUnit.updateState(result)
+		this.#redUnit.updateState(passYn)
 		if (this.#ingIndex < this.#list.length) {
 			requestAnimationFrame(()=>{
 				this.#next()

@@ -1,3 +1,4 @@
+
 import Prism from 'prismjs';
 import 'prismjs/components/prism-javascript';
 import createDomElement from "./createDomElement";
@@ -6,13 +7,17 @@ import CONST_PAGE_COUNT_EVENT from "./page/CONST_PAGE_COUNT_EVENT";
 class UnitTest {
 	#dom;
 	#testFunc;
-	#expect;
+	#expectValue;
 	#isPass:boolean;
 	#openYn:boolean;
 
+	get expectValue() {
+		return this.#expectValue;
+	}
+
 	constructor(title, testFunc, expectValue) {
 		this.#testFunc = testFunc;
-		this.#expect = expectValue;
+		this.#expectValue = expectValue;
 		this.#initializeDom(title);
 		dispatchEvent(new CustomEvent(CONST_PAGE_COUNT_EVENT.ADD_UNIT_NUM));
 	}
@@ -23,7 +28,7 @@ class UnitTest {
 
 	execute(runner) {
 		this.#testFunc((resultValue) => {
-			this.#isPass = this.#expect === resultValue;
+			this.#isPass = this.#expectValue === resultValue;
 			this.#openYn = !this.#isPass;
 			this.determinePassFailAndDispatchEvent(this.#isPass);
 			this.#dom.querySelector('.result').textContent = `${resultValue}`;
@@ -56,7 +61,7 @@ class UnitTest {
 				<pre class="red-unit-test-code-wrap" style="display: none">${formatCodeSnippet(`${this.#testFunc}`)}</pre>
 				<div class="red-unit-test-result-wrap">
 					<span class="pass-fail"></span>
-					<div class="pass-fail"><span>expect</span> : ${JSON.stringify(this.#expect)}</div>
+					<div class="pass-fail"><span>expect</span> : ${JSON.stringify(this.#expectValue)}</div>
 					<div class="pass-fail"><span>result</span> : <span class="result"></span></div>
 				</div>
 				
