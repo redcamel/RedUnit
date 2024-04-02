@@ -10,8 +10,11 @@ html, body {
 pre {
     overflow: hidden;
     border-radius: 12px;
-}
 
+}
+pre code {
+    tab-size: 1 !important;
+}
 .red-unit-root {
     display: flex;
     flex-direction: column;

@@ -1,8 +1,10 @@
+import 'prismjs/themes/prism-tomorrow.css'; // 스타일
 import './core/RedUnit.css'
 import createDomElement from "./core/createDomElement";
 import PageContainer from "./core/page/PageContainer";
 import TotalPageState from "./core/page/TotalPageState";
 import Runner from "./core/Runner";
+
 class RedUnit {
 	#passCount: number = 0
 	#failCount: number = 0

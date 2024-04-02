@@ -1,3 +1,5 @@
+import Prism from 'prismjs';
+import 'prismjs/components/prism-javascript';
 import createDomElement from "./createDomElement";
 import CONST_PAGE_COUNT_EVENT from "./page/CONST_PAGE_COUNT_EVENT";
 
@@ -25,6 +27,7 @@ class UnitTest {
 			this.#dom.querySelector('.pass-fail').textContent = `${isPass ? 'PASS' : 'FAIL'}`;
 			this.#dom.querySelector('.pass-fail').className = `pass-fail ${isPass ? 'pass' : 'fail'}`;
 			runner.run(resultValue)
+			Prism.highlightAll()
 		});
 	}
 
@@ -36,7 +39,7 @@ class UnitTest {
 
 	#initializeDom(title: string) {
 		this.#dom = createDomElement();
-		this.#dom.innerHTML = `
+		this.#dom.innerHTML = ` 
 			<div class="red-unit-test-wrap">
 				<div class="red-unit-test-title">${title}</div>
 				<pre>${formatCodeSnippet(`${this.#testFunc}`)}</pre>
@@ -47,16 +50,23 @@ class UnitTest {
 				<div class="red-unit-test-result-wrap"> 
 					<span class="pass-fail"></span>
 				</div>
-			</div>
+			</div> 
 		`;
 		document.body.appendChild(this.#dom);
 	}
 }
 
 function formatCodeSnippet(input: string): string {
+	const options = {};
+	const modified = removeLeadingWhitespace(input)
+	const highlightedCode = modified
+	console.log('highlightedCode2', modified)
+	console.log('highlightedCode2', highlightedCode)
+	return `<code class="language-javascript red-unit-test-code-wrap">${input}</code>`;
+}
 
-	const highlightedCode = input
-	return `<code class="language-javascript red-unit-test-code-wrap">\n${highlightedCode}\n</code>`;
+function removeLeadingWhitespace(text) {
+	return text.replace(/\s+/g, ' ');
 }
 
 export default UnitTest;

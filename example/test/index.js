@@ -1,4 +1,4 @@
-import RedUnit from '../../dist'
+import RedUnit from '../../dist/'
 
 const redUnit = new RedUnit('Test PageTitle')
 redUnit.testGroup(
@@ -7,6 +7,10 @@ redUnit.testGroup(
 		let i = 10
 		while (i--) {
 			runner.defineTest(`test title ${i}`, function (run) {
+					/**
+					 * test
+					 */
+					// test
 					console.log('unitTest', i)
 					run(Math.random() < Math.random())
 				},
