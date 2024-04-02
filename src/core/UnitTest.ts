@@ -35,16 +35,12 @@ class UnitTest {
 		});
 	}
 	#updateDisplayByResult(){
-		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = `${this.#isPass ? 'none' : ''}`;
+		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = this.#openYn ? '' : 'none'
 		this.#dom.querySelector('.red-unit-test-wrap').style.background = `${this.#isPass ? '' : '#2d0000'}`;
 		this.#dom.querySelector('.red-unit-test-title-open-close').innerHTML = `${this.#openYn ? 'close' : 'open'}`;
-
-		console.log(this.#dom.querySelector('.red-unit-test-code-wrap').style.display)
-		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = this.#openYn ? '' : 'none'
 	}
 
 	determinePassFailAndDispatchEvent(isPass: boolean) {
-		console.log(isPass)
 		const event = isPass ? CONST_PAGE_COUNT_EVENT.PASS_UNIT_NUM : CONST_PAGE_COUNT_EVENT.FAIL_UNIT_NUM;
 		dispatchEvent(new CustomEvent(event));
 	}
@@ -78,8 +74,6 @@ class UnitTest {
 function formatCodeSnippet(input: string): string {
 	const options = {};
 	const highlightedCode = input
-	console.log('highlightedCode2', input)
-	console.log('highlightedCode2', highlightedCode)
 	return `<code class="language-javascript">${highlightedCode}</code>`;
 }
 

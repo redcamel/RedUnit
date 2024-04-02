@@ -3,17 +3,17 @@ import './core/RedUnit.css'
 import createDomElement from "./core/createDomElement";
 import PageContainer from "./core/page/PageContainer";
 import TotalPageState from "./core/page/TotalPageState";
-import Runner from "./core/Runner";
+import GroupRunner from "./core/GroupRunner";
 
 class RedUnit {
 	#passCount: number = 0
 	#failCount: number = 0
 	#totalCount: number = 0
 	#groupCount: number = 0
+	#title: string
 	#rootDom
 	#titleRootDom
 	#titleDom
-	#title: string
 	#stateDom
 
 	constructor(title: string) {
@@ -22,22 +22,20 @@ class RedUnit {
 
 	static pageLoader(testName: string, testList: { title: string, src: string }[], parentDom) {
 		const totalState = new TotalPageState(testName, testList)
-		if(!parentDom) {
+		if (!parentDom) {
 			parentDom = createDomElement('red-unit-pages-root')
 			document.body.appendChild(parentDom)
 		}
-
 		testList.forEach(item => {
 			const t0 = new PageContainer(item.title, item.src, totalState)
 			parentDom.appendChild(t0.wrap)
 		});
-
 	}
 
 	testGroup = (groupTitle: string, initFunc) => {
 		this.#initDom()
 		this.#groupCount++
-		new Runner(this, groupTitle, initFunc)
+		new GroupRunner(this, groupTitle, initFunc)
 	}
 
 	increaseTotalCount() {

@@ -11,7 +11,6 @@ redUnit.testGroup(
 					 * test
 					 */
 					// test
-					console.log('unitTest', i)
 					run(true)
 				},
 				true
@@ -25,9 +24,8 @@ redUnit.testGroup(
 		let i = 10
 		while (i--) {
 			runner.defineTest(`test title ${i}`, function (run) {
-					console.log('unitTest', i)
-					run(Math.random() < Math.random())
-					// run(true)
+					// run(Math.random() < Math.random())
+					run(true)
 				},
 				true
 			)

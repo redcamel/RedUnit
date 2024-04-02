@@ -5,6 +5,7 @@ html, body {
     color: #fff;
     overflow-x: hidden;
     font-size: 12px;
+    height: 100%;
 }
 
 pre {
@@ -33,10 +34,15 @@ pre code {
     font-size: 16px;
 }
 .red-unit-total-state-wrap {
+    position: sticky;
+    top:0;
+    z-index: 1;
+    background: #212121;
     display: flex;
     flex-direction: column;
     gap:3px;
-    padding: 10px;
+    padding: 16px 10px;
+
 }
 
 .red-unit-total-state-box {
@@ -44,11 +50,8 @@ pre code {
     align-items: center;
     justify-content: flex-start;
     white-space: nowrap;
-    line-height: 1;
     font-size: 11px;
     gap: 6px;
-
-
 }
 
 .red-unit-iframe-wrap {
@@ -102,6 +105,7 @@ pre code {
     align-items: stretch;
     gap: 6px;
     padding: 12px;
+    background: #212121;
 }
 
 .red-unit-test-runner-title {

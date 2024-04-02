@@ -2,7 +2,7 @@ import RedUnit from "../RedUnit";
 import createDomElement from "./createDomElement";
 import UnitTest from "./UnitTest";
 
-class Runner {
+class GroupRunner {
 	#passCount: number = 0
 	#failCount: number = 0
 	#ingIndex: number = 0
@@ -22,8 +22,7 @@ class Runner {
 		this.#titleDom.innerHTML = this.#groupTitle
 		this.#stateDom = createDomElement()
 		this.#testContainerDom = createDomElement('red-unit-test-runner-test-container')
-		const onlyRootState = window.self !== window.top
-		if(onlyRootState) this.#rootDom.style.display = 'none'
+		if(window.self !== window.top) this.#rootDom.style.display = 'none'
 		this.#rootDom.appendChild(this.#titleDom)
 		this.#rootDom.appendChild(this.#stateDom)
 		this.#rootDom.appendChild(this.#testContainerDom)
@@ -40,7 +39,7 @@ class Runner {
 		this.#redUnit.increaseTotalCount()
 	}
 
-	run(result) {
+	run(result:boolean) {
 		if (result) this.#passCount++
 		else this.#failCount++
 		this.#updateState()
@@ -71,5 +70,5 @@ class Runner {
 		`
 	}
 }
-
-export default Runner
+Object.freeze(GroupRunner)
+export default GroupRunner

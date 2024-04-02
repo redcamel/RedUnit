@@ -65,5 +65,5 @@ class TotalPageState {
     `
 	}
 }
-
+Object.freeze(TotalPageState)
 export default TotalPageState

@@ -1,4 +1,3 @@
-
 import createDomElement from "../createDomElement";
 import CONST_PAGE_COUNT_EVENT from "./CONST_PAGE_COUNT_EVENT";
 import TotalPageState from "./TotalPageState";
@@ -9,15 +8,15 @@ class PageContainer {
 		return this.#wrap;
 	}
 
-	#totalCount:number = 0
-	#passCount:number = 0
-	#failCount:number = 0
+	#totalCount: number = 0
+	#passCount: number = 0
+	#failCount: number = 0
 	#title: any
 	#iframe: HTMLIFrameElement
 
 	constructor(title: string, src: string, totalState: TotalPageState) {
 		this.createAndAppendElements(title, src);
-		requestAnimationFrame(()=>this.addListeners(totalState))
+		requestAnimationFrame(() => this.addListeners(totalState))
 	}
 
 	createAndAppendElements(title: string, src: string) {
@@ -29,29 +28,29 @@ class PageContainer {
 	}
 
 	addListeners(totalState: TotalPageState) {
-		this.#iframe.contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.ADD_UNIT_NUM, () => {
+		const {contentWindow} = this.#iframe
+		contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.ADD_UNIT_NUM, () => {
 			totalState.increaseTotalUnitNum()
 			this.#totalCount++
 		})
-		this.#iframe.contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.PASS_UNIT_NUM, () => {
+		contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.PASS_UNIT_NUM, () => {
 			totalState.increaseTotalPassUnitNum()
 			this.#passCount++
-			if(this.#passCount === this.#totalCount){
+			if (this.#passCount === this.#totalCount) {
 				totalState.increaseTotalPassPageNum()
 			}
 		})
-		this.#iframe.contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.FAIL_UNIT_NUM, () => {
+		contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.FAIL_UNIT_NUM, () => {
 			totalState.increaseTotalFailUnitNum()
-			if(this.#failCount==0){
+			if (this.#failCount == 0) {
 				totalState.increaseTotalFailPageNum()
 			}
 			this.#failCount++
-
 		})
 	}
 
 	#createAnchorElement(title: string, href: string) {
-		let titleElement = createDomElement('red-unit-iframe-title', 'a');
+		const titleElement = createDomElement('red-unit-iframe-title', 'a');
 		titleElement.innerHTML = `${title}<span class="red-unit-iframe-title-href">${href}</span>`;
 		// @ts-ignore
 		titleElement.href = href
@@ -59,11 +58,11 @@ class PageContainer {
 	}
 
 	#createIframeElement(className: string, src: string): HTMLIFrameElement {
-		let iframe = document.createElement('iframe');
+		const iframe = document.createElement('iframe');
 		iframe.src = src;
 		iframe.setAttribute('class', className);
 		return iframe;
 	}
 }
-
+Object.freeze(PageContainer)
 export default PageContainer
