@@ -56,10 +56,10 @@ class Runner {
 
 	#updateState() {
 		this.#stateDom.innerHTML = `
-			<div class="red-unit-test-suite-state-box">
-				<div>pass : <span class="unit-pass-count">${this.#passCount}</span></div>
-				/<div>fail : <span class="unit-fail-count">${this.#failCount}</span></div>
-				/<div>total : <span class="unit-total-count">${this.#list.length}</span></div>
+			<div class="red-unit-test-suite-state-box" style="background:${this.#failCount ? 'red' : 'green'}">
+				<div>PASS : <span class="unit-pass-count">${this.#passCount}</span></div>
+				/<div>FAIL : <span class="unit-fail-count">${this.#failCount}</span></div>
+				/<div>TOTAL : <span class="unit-total-count">${this.#list.length}</span></div>
 			</div>
 		`
 	}

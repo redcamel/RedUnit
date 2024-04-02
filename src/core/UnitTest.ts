@@ -7,6 +7,7 @@ class UnitTest {
 	#dom;
 	#testFunc;
 	#expect;
+	#isPass:boolean;
 
 	constructor(title, testFunc, expectValue) {
 		this.#testFunc = testFunc;
@@ -21,14 +22,18 @@ class UnitTest {
 
 	execute(runner) {
 		this.#testFunc((resultValue) => {
-			const isPass = this.#expect === resultValue;
-			this.determinePassFailAndDispatchEvent(isPass);
+			this.#isPass = this.#expect === resultValue;
+			this.determinePassFailAndDispatchEvent(this.#isPass);
 			this.#dom.querySelector('.result').textContent = `${resultValue}`;
-			this.#dom.querySelector('.pass-fail').textContent = `${isPass ? 'PASS' : 'FAIL'}`;
-			this.#dom.querySelector('.pass-fail').className = `pass-fail ${isPass ? 'pass' : 'fail'}`;
+			this.#dom.querySelector('.pass-fail').textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
+			this.#dom.querySelector('.pass-fail').className = `pass-fail ${this.#isPass ? 'pass' : 'fail'}`;
+			this.#updateDisplayByResult()
 			runner.run(resultValue)
 			Prism.highlightAll()
 		});
+	}
+	#updateDisplayByResult(){
+		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = `${this.#isPass ? 'none' : ''}`;
 	}
 
 	determinePassFailAndDispatchEvent(isPass: boolean) {
@@ -42,14 +47,13 @@ class UnitTest {
 		this.#dom.innerHTML = ` 
 			<div class="red-unit-test-wrap">
 				<div class="red-unit-test-title">${title}</div>
-				<pre>${formatCodeSnippet(`${this.#testFunc}`)}</pre>
+				<pre class="red-unit-test-code-wrap" style="display: none">${formatCodeSnippet(`${this.#testFunc}`)}</pre>
 				<div class="red-unit-test-result-wrap">
-					<div><span>expect</span>: ${JSON.stringify(this.#expect)}</div>
-					<div><span>result</span>: <span class="result"></span></div>
-				</div>
-				<div class="red-unit-test-result-wrap"> 
 					<span class="pass-fail"></span>
+					<div class="pass-fail"><span>expect</span> : ${JSON.stringify(this.#expect)}</div>
+					<div class="pass-fail"><span>result</span> : <span class="result"></span></div>
 				</div>
+				
 			</div> 
 		`;
 		document.body.appendChild(this.#dom);
@@ -58,15 +62,11 @@ class UnitTest {
 
 function formatCodeSnippet(input: string): string {
 	const options = {};
-	const modified = removeLeadingWhitespace(input)
-	const highlightedCode = modified
-	console.log('highlightedCode2', modified)
+	const highlightedCode = input
+	console.log('highlightedCode2', input)
 	console.log('highlightedCode2', highlightedCode)
-	return `<code class="language-javascript red-unit-test-code-wrap">${input}</code>`;
+	return `<code class="language-javascript">${highlightedCode}</code>`;
 }
 
-function removeLeadingWhitespace(text) {
-	return text.replace(/\s+/g, ' ');
-}
 
 export default UnitTest;

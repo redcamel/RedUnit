@@ -89,6 +89,7 @@ pre code {
     gap: 6px;
     padding: 10px;
     background: rgba(255, 255, 255, 0.1);
+    font-size: 11px;
 }
 
 .red-unit-test-runner-test-container {
@@ -121,24 +122,31 @@ pre code {
     display: flex;
     align-items: center;
     gap: 6px;
+    line-height: 1;
+    font-size: 11px;
+    color : #bebebe;
 }
 
 .red-unit-test-result-wrap > .pass-fail {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 6px;
+    padding: 5px 6px;
     border-radius: 3px;
-    font-size: 11px;
-
+    line-height: 1;
+    color : #ababab;
+    gap:6px;
+    background: rgba(255,255,255,0.1);
 }
 
 .red-unit-test-result-wrap > .pass-fail.pass {
     background: green;
+    color :#fff;
 }
 
 .red-unit-test-result-wrap > .pass-fail.fail {
     background: red;
+    color :#fff;
 }
 
 ::-webkit-scrollbar {
