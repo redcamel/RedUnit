@@ -1,9 +1,11 @@
 # RedUnit
 
+## Live Sample
+https://redcamel.github.io/RedUnit/example
 
 ## Basic Sample
 ```javascript
-import RedUnit from '../../dist/'
+import RedUnit from '../../dist/index.js'
 
 const redUnit = new RedUnit('Test PageTitle')
 
@@ -46,7 +48,7 @@ redUnit.testGroup(
 
 ## Multi Page Sample
 ```javascript
-import RedUnit from '../dist/'
+import RedUnit from '../dist/index.js'
 
 RedUnit.pageLoader('rootPage', [
 	{title: 'test1', src: './test'},
@@ -61,3 +63,4 @@ RedUnit.pageLoader('rootPage', [
 ])
 
 ```
+

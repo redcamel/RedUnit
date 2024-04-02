@@ -1,4 +1,4 @@
-import RedUnit from '../dist/'
+import RedUnit from '../dist/index.js'
 
 RedUnit.pageLoader('rootPage', [
 	{title: 'test1', src: './test'},

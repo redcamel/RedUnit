@@ -1,4 +1,4 @@
-import RedUnit from '../../dist/'
+import RedUnit from '../../dist/index.js'
 
 const redUnit = new RedUnit('Test PageTitle')
 
