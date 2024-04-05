@@ -18,6 +18,9 @@ pre code {
     tab-size: 1 !important;
 }
 
+.error {
+    color: #f2a971;
+}
 .red-unit-pages-root {
     display: flex;
     flex-direction: column;

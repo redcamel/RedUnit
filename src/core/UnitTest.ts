@@ -27,13 +27,14 @@ class UnitTest {
 	}
 
 	execute(runner) {
-		this.#testFunc((resultValue) => {
+		this.#testFunc((resultValue,error) => {
 			this.#isPass = this.#expectValue === resultValue;
 			this.#openYn = !this.#isPass;
 			this.determinePassFailAndDispatchEvent(this.#isPass);
 			this.#dom.querySelector('.result').textContent = `${resultValue}`;
 			this.#dom.querySelector('.pass-fail').textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
 			this.#dom.querySelector('.pass-fail').className = `pass-fail ${this.#isPass ? 'pass' : 'fail'}`;
+			this.#dom.querySelector('.error').textContent = error
 			this.#updateDisplayByResult()
 			runner.run(resultValue)
 			Prism.highlightAll()
@@ -64,6 +65,7 @@ class UnitTest {
 					<div class="pass-fail"><span>expect</span> : ${JSON.stringify(this.#expectValue)}</div>
 					<div class="pass-fail"><span>result</span> : <span class="result"></span></div>
 				</div>
+				<div class="error"></div>
 				
 			</div> 
 		`;

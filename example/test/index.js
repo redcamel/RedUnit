@@ -34,5 +34,14 @@ redUnit.testGroup(
 			let falseTest = false === false;
 			run(falseTest);
 		}, true);
+		runner.defineTest('Test error', function(run) {
+			try {
+				let errorTest = nonExistentVariable === '';
+				run(errorTest);
+			} catch (e) {
+				run(true,e);
+			}
+		}, true);
+
 	}
 );
