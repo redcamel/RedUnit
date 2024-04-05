@@ -39,8 +39,7 @@ class GroupRunner {
 		this.#redUnit.increaseTotalCount()
 	}
 
-	run(result:boolean) {
-		const passYn = result === this.#list[this.#ingIndex].expectValue
+	run(passYn:boolean) {
 		if (passYn) this.#passCount++
 		else this.#failCount++
 		this.#updateState()

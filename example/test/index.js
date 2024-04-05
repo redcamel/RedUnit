@@ -42,6 +42,13 @@ redUnit.testGroup(
 				run(true,e);
 			}
 		}, true);
-
+		runner.defineTest('Test Array', function (run) {
+			let arrayTest = Array.isArray([]);
+			run(arrayTest);
+		}, true);
+		runner.defineTest('Test Array', function (run) {
+			let arrayTest = [1,2,3];
+			run(arrayTest);
+		}, [1,2,3]);
 	}
 );

@@ -28,15 +28,19 @@ class UnitTest {
 
 	execute(runner) {
 		this.#testFunc((resultValue,error) => {
-			this.#isPass = this.#expectValue === resultValue;
+			if (Array.isArray(this.#expectValue) && Array.isArray(resultValue)) {
+				this.#isPass = this.#expectValue.every((v,i) => v === resultValue[i]);
+			} else {
+				this.#isPass = this.#expectValue === resultValue;
+			}
 			this.#openYn = !this.#isPass;
 			this.determinePassFailAndDispatchEvent(this.#isPass);
-			this.#dom.querySelector('.result').textContent = `${resultValue}`;
+			this.#dom.querySelector('.result').textContent = JSON.stringify(resultValue);
 			this.#dom.querySelector('.pass-fail').textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
 			this.#dom.querySelector('.pass-fail').className = `pass-fail ${this.#isPass ? 'pass' : 'fail'}`;
 			this.#dom.querySelector('.error').textContent = error
 			this.#updateDisplayByResult()
-			runner.run(resultValue)
+			runner.run(	this.#isPass)
 			Prism.highlightAll()
 		});
 	}
