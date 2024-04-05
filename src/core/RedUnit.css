@@ -181,6 +181,7 @@ pre code {
 
 .red-unit-test-title {
     font-size: 12px;
+    line-height: 1.6;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
