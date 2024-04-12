@@ -50,5 +50,6 @@ redUnit.testGroup(
 			let arrayTest = [1,2,3];
 			run(arrayTest);
 		}, [1,2,3]);
+
 	}
 );
