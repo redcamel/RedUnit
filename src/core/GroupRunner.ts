@@ -7,14 +7,14 @@ class GroupRunner {
 	#failCount: number = 0
 	#ingIndex: number = 0
 	#list: UnitTest[] = []
-	#rootDom
-	#titleDom
-	#stateDom
-	#testContainerDom
+	#rootDom: HTMLElement
+	#titleDom: HTMLElement
+	#stateDom: HTMLElement
+	#testContainerDom: HTMLElement
 	#redUnit: RedUnit
 	#groupTitle: string
 
-	constructor(redUnit: RedUnit, groupTitle: string, initFunc:any) {
+	constructor(redUnit: RedUnit, groupTitle: string, initFunc: (runner: GroupRunner) => void) {
 		this.#redUnit = redUnit
 		this.#groupTitle = groupTitle
 		this.#rootDom = createDomElement('red-unit-test-runner-root')
@@ -31,7 +31,7 @@ class GroupRunner {
 		this.#next()
 	}
 
-	defineTest = (title:String, testFunc:any, expectValue:any) => {
+	defineTest = (title: string, testFunc: Function, expectValue: any) => {
 		const t0 = new UnitTest(title, testFunc, expectValue)
 		this.#list.push(t0)
 		this.#testContainerDom.appendChild(t0.dom)
@@ -39,7 +39,7 @@ class GroupRunner {
 		this.#redUnit.increaseTotalCount()
 	}
 
-	run(passYn:boolean) {
+	run(passYn: boolean) {
 		if (passYn) this.#passCount++
 		else this.#failCount++
 		this.#updateState()
@@ -47,13 +47,13 @@ class GroupRunner {
 		this.#ingIndex++
 		this.#redUnit.updateState(passYn)
 		if (this.#ingIndex < this.#list.length) {
-			if (this.#ingIndex % 50 === 0) {
+			// if (this.#ingIndex % 50 === 0) {
 				requestAnimationFrame(() => {
 					this.#next()
 				})
-			} else {
-				this.#next()
-			}
+			// } else {
+			// 	this.#next()
+			// }
 		}
 	}
 

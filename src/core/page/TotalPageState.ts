@@ -1,7 +1,7 @@
 import createDomElement from "../createDomElement";
 
 class TotalPageState {
-	#rootDom: HTMLDivElement
+	#rootDom!: HTMLElement
 	//
 	#passTestCount: number = 0
 	#failTestCount: number = 0

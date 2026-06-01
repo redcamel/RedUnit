@@ -3,16 +3,16 @@ import CONST_PAGE_COUNT_EVENT from "./CONST_PAGE_COUNT_EVENT";
 import TotalPageState from "./TotalPageState";
 
 class PageContainer {
-	#wrap: HTMLDivElement
-	get wrap(): HTMLDivElement {
+	#wrap!: HTMLElement
+	get wrap(): HTMLElement {
 		return this.#wrap;
 	}
 
 	#totalCount: number = 0
 	#passCount: number = 0
 	#failCount: number = 0
-	#title: any
-	#iframe: HTMLIFrameElement
+	#title!: HTMLElement
+	#iframe!: HTMLIFrameElement
 
 	constructor(title: string, src: string, totalState: TotalPageState) {
 		this.createAndAppendElements(title, src);
@@ -29,30 +29,31 @@ class PageContainer {
 
 	addListeners(totalState: TotalPageState) {
 		const {contentWindow} = this.#iframe
-		contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.ADD_UNIT_NUM, () => {
-			totalState.increaseTotalUnitNum()
-			this.#totalCount++
-		})
-		contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.PASS_UNIT_NUM, () => {
-			totalState.increaseTotalPassUnitNum()
-			this.#passCount++
-			if (this.#passCount === this.#totalCount) {
-				totalState.increaseTotalPassPageNum()
-			}
-		})
-		contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.FAIL_UNIT_NUM, () => {
-			totalState.increaseTotalFailUnitNum()
-			if (this.#failCount == 0) {
-				totalState.increaseTotalFailPageNum()
-			}
-			this.#failCount++
-		})
+		if (contentWindow) {
+			contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.ADD_UNIT_NUM, () => {
+				totalState.increaseTotalUnitNum()
+				this.#totalCount++
+			})
+			contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.PASS_UNIT_NUM, () => {
+				totalState.increaseTotalPassUnitNum()
+				this.#passCount++
+				if (this.#passCount === this.#totalCount) {
+					totalState.increaseTotalPassPageNum()
+				}
+			})
+			contentWindow.addEventListener(CONST_PAGE_COUNT_EVENT.FAIL_UNIT_NUM, () => {
+				totalState.increaseTotalFailUnitNum()
+				if (this.#failCount == 0) {
+					totalState.increaseTotalFailPageNum()
+				}
+				this.#failCount++
+			})
+		}
 	}
 
 	#createAnchorElement(title: string, href: string) {
-		const titleElement = createDomElement('red-unit-iframe-title', 'a');
+		const titleElement = createDomElement('red-unit-iframe-title', 'a') as HTMLAnchorElement;
 		titleElement.innerHTML = `${title}<span class="red-unit-iframe-title-href">${href}</span>`;
-		// @ts-ignore
 		titleElement.href = href
 		return titleElement;
 	}

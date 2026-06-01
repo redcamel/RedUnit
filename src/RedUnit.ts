@@ -11,28 +11,31 @@ class RedUnit {
 	#totalCount: number = 0
 	#groupCount: number = 0
 	#title: string
-	#rootDom
-	#titleRootDom
-	#titleDom
-	#stateDom
+	#rootDom!: HTMLElement
+	#titleRootDom!: HTMLElement
+	#titleDom!: HTMLElement
+	#stateDom!: HTMLElement
 
 	constructor(title: string) {
 		this.#title = title
 	}
 
-	static pageLoader(testName: string, testList: { title: string, src: string }[], parentDom) {
+	static pageLoader(testName: string, testList: { title: string, src: string }[], parentDom?: HTMLElement) {
 		const totalState = new TotalPageState(testName, testList)
+		let targetDom: HTMLElement;
 		if (!parentDom) {
-			parentDom = createDomElement('red-unit-pages-root')
-			document.body.appendChild(parentDom)
+			targetDom = createDomElement('red-unit-pages-root')
+			document.body.appendChild(targetDom)
+		} else {
+			targetDom = parentDom;
 		}
 		testList.forEach(item => {
 			const t0 = new PageContainer(item.title, item.src, totalState)
-			parentDom.appendChild(t0.wrap)
+			targetDom.appendChild(t0.wrap)
 		});
 	}
 
-	testGroup = (groupTitle: string, initFunc) => {
+	testGroup = (groupTitle: string, initFunc: (runner: GroupRunner) => void) => {
 		this.#initDom()
 		this.#groupCount++
 		new GroupRunner(this, groupTitle, initFunc)
@@ -42,7 +45,7 @@ class RedUnit {
 		this.#totalCount++
 	}
 
-	updateState(result) {
+	updateState(result: boolean) {
 		if (result) this.#passCount++
 		else this.#failCount++
 		//

@@ -38,13 +38,13 @@ var d = class {
 	}
 	addListeners(e) {
 		let { contentWindow: t } = this.#a;
-		t.addEventListener(u.ADD_UNIT_NUM, () => {
+		t && (t.addEventListener(u.ADD_UNIT_NUM, () => {
 			e.increaseTotalUnitNum(), this.#t++;
 		}), t.addEventListener(u.PASS_UNIT_NUM, () => {
 			e.increaseTotalPassUnitNum(), this.#n++, this.#n === this.#t && e.increaseTotalPassPageNum();
 		}), t.addEventListener(u.FAIL_UNIT_NUM, () => {
 			e.increaseTotalFailUnitNum(), this.#r == 0 && e.increaseTotalFailPageNum(), this.#r++;
-		});
+		}));
 	}
 	#o(e, t) {
 		let n = l("red-unit-iframe-title", "a");
@@ -859,8 +859,8 @@ var m = class {
 	#e;
 	#t;
 	#n;
-	#r;
-	#i;
+	#r = !1;
+	#i = !1;
 	get expectValue() {
 		return this.#n;
 	}
@@ -873,14 +873,33 @@ var m = class {
 	execute(e) {
 		try {
 			this.#t((t, n) => {
-				Array.isArray(this.#n) && Array.isArray(t) ? this.#r = this.#n.every((e, n) => e === t[n]) : this.#r = this.#n === t, this.#i = !this.#r, this.determinePassFailAndDispatchEvent(this.#r), this.#e.querySelector(".result").textContent = JSON.stringify(t), this.#e.querySelector(".pass-fail").textContent = `${this.#r ? "PASS" : "FAIL"}`, this.#e.querySelector(".pass-fail").className = `pass-fail ${this.#r ? "pass" : "fail"}`, this.#e.querySelector(".error").textContent = n, this.#a(), e.run(this.#r), p.default.highlightAll();
+				Array.isArray(this.#n) && Array.isArray(t) ? this.#r = this.#n.every((e, n) => e === t[n]) : this.#r = this.#n === t, this.#i = !this.#r, this.determinePassFailAndDispatchEvent(this.#r);
+				let r = this.#e.querySelector(".result");
+				r && (r.textContent = JSON.stringify(t));
+				let i = this.#e.querySelector(".pass-fail");
+				i && (i.textContent = `${this.#r ? "PASS" : "FAIL"}`, i.className = `pass-fail ${this.#r ? "pass" : "fail"}`);
+				let a = this.#e.querySelector(".error");
+				a && (a.textContent = n), this.#a(), e.run(this.#r);
+				let o = this.#e.querySelector("code");
+				o && p.default.highlightElement(o);
 			});
 		} catch (t) {
-			this.#i = !0, this.determinePassFailAndDispatchEvent(this.#r), this.#e.querySelector(".pass-fail").textContent = `${this.#r ? "PASS" : "FAIL"}`, this.#e.querySelector(".pass-fail").className = `pass-fail ${this.#r ? "pass" : "fail"}`, this.#e.querySelector(".error").textContent = t, this.#a(), e.run(!1, t), p.default.highlightAll();
+			this.#i = !0, this.#r = !1, this.determinePassFailAndDispatchEvent(this.#r);
+			let n = this.#e.querySelector(".pass-fail");
+			n && (n.textContent = "FAIL", n.className = "pass-fail fail");
+			let r = this.#e.querySelector(".error");
+			r && (r.textContent = t.message || t), this.#a(), e.run(!1);
+			let i = this.#e.querySelector("code");
+			i && p.default.highlightElement(i);
 		}
 	}
 	#a() {
-		this.#e.querySelector(".red-unit-test-code-wrap").style.display = this.#i ? "" : "none", this.#e.querySelector(".red-unit-test-wrap").style.background = `${this.#r ? "" : "#2d0000"}`, this.#e.querySelector(".red-unit-test-title-open-close").innerHTML = `${this.#i ? "close" : "open"}`;
+		let e = this.#e.querySelector(".red-unit-test-code-wrap");
+		e && (e.style.display = this.#i ? "" : "none");
+		let t = this.#e.querySelector(".red-unit-test-wrap");
+		t && (t.style.background = `${this.#r ? "" : "#2d0000"}`);
+		let n = this.#e.querySelector(".red-unit-test-title-open-close");
+		n && (n.innerHTML = `${this.#i ? "close" : "open"}`);
 	}
 	determinePassFailAndDispatchEvent(e) {
 		let t = e ? u.PASS_UNIT_NUM : u.FAIL_UNIT_NUM;
@@ -902,7 +921,9 @@ var m = class {
 				<div class="error"></div>
 				
 			</div> 
-		`, document.body.appendChild(this.#e), this.#e.querySelector(".red-unit-test-title-wrap").addEventListener("click", () => {
+		`, document.body.appendChild(this.#e);
+		let t = this.#e.querySelector(".red-unit-test-title-wrap");
+		t && t.addEventListener("click", () => {
 			this.#i = !this.#i, this.#a();
 		});
 	}
@@ -966,10 +987,10 @@ var _ = class {
 		this.#i = e;
 	}
 	static pageLoader(e, t, n) {
-		let r = new f(e, t);
-		n || (n = l("red-unit-pages-root"), document.body.appendChild(n)), t.forEach((e) => {
+		let r = new f(e, t), i;
+		n ? i = n : (i = l("red-unit-pages-root"), document.body.appendChild(i)), t.forEach((e) => {
 			let t = new d(e.title, e.src, r);
-			n.appendChild(t.wrap);
+			i.appendChild(t.wrap);
 		});
 	}
 	testGroup = (e, t) => {

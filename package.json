@@ -20,6 +20,7 @@
   "author": "redcamel",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "@types/prismjs": "^1.26.6",
     "prismjs": "^1.30.0",
     "typescript": "^6.0.3",

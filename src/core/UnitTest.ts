@@ -3,19 +3,20 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-javascript';
 import createDomElement from "./createDomElement";
 import CONST_PAGE_COUNT_EVENT from "./page/CONST_PAGE_COUNT_EVENT";
+import GroupRunner from "./GroupRunner";
 
 class UnitTest {
-	#dom;
-	#testFunc;
-	#expectValue;
-	#isPass:boolean;
-	#openYn:boolean;
+	#dom!: HTMLElement;
+	#testFunc: Function;
+	#expectValue: any;
+	#isPass: boolean = false;
+	#openYn: boolean = false;
 
 	get expectValue() {
 		return this.#expectValue;
 	}
 
-	constructor(title, testFunc, expectValue) {
+	constructor(title: string, testFunc: Function, expectValue: any) {
 		this.#testFunc = testFunc;
 		this.#expectValue = expectValue;
 		this.#initializeDom(title);
@@ -26,11 +27,9 @@ class UnitTest {
 		return this.#dom;
 	}
 
-	execute(runner) {
-
-
+	execute(runner: GroupRunner) {
 		try {
-			this.#testFunc((resultValue, error) => {
+			this.#testFunc((resultValue: any, error: any) => {
 				if (Array.isArray(this.#expectValue) && Array.isArray(resultValue)) {
 					this.#isPass = this.#expectValue.every((v, i) => v === resultValue[i]);
 				} else {
@@ -38,32 +37,53 @@ class UnitTest {
 				}
 				this.#openYn = !this.#isPass;
 				this.determinePassFailAndDispatchEvent(this.#isPass);
-				this.#dom.querySelector('.result').textContent = JSON.stringify(resultValue);
-				this.#dom.querySelector('.pass-fail').textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
-				this.#dom.querySelector('.pass-fail').className = `pass-fail ${this.#isPass ? 'pass' : 'fail'}`;
-				this.#dom.querySelector('.error').textContent = error
+				
+				const resultDom = this.#dom.querySelector('.result');
+				if (resultDom) resultDom.textContent = JSON.stringify(resultValue);
+				
+				const passFailDom = this.#dom.querySelector('.pass-fail');
+				if (passFailDom) {
+					passFailDom.textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
+					passFailDom.className = `pass-fail ${this.#isPass ? 'pass' : 'fail'}`;
+				}
+				
+				const errorDom = this.#dom.querySelector('.error');
+				if (errorDom) errorDom.textContent = error;
+				
 				this.#updateDisplayByResult()
 				runner.run(this.#isPass)
 				const codeElement = this.#dom.querySelector('code');
 				if (codeElement) Prism.highlightElement(codeElement);
 			});
-		}catch (e) {
+		}catch (e: any) {
 			this.#openYn = true;
+			this.#isPass = false;
 			this.determinePassFailAndDispatchEvent(this.#isPass);
-			this.#dom.querySelector('.pass-fail').textContent = `${this.#isPass ? 'PASS' : 'FAIL'}`;
-			this.#dom.querySelector('.pass-fail').className = `pass-fail ${this.#isPass ? 'pass' : 'fail'}`;
-			this.#dom.querySelector('.error').textContent = e
+			
+			const passFailDom = this.#dom.querySelector('.pass-fail');
+			if (passFailDom) {
+				passFailDom.textContent = 'FAIL';
+				passFailDom.className = 'pass-fail fail';
+			}
+			
+			const errorDom = this.#dom.querySelector('.error');
+			if (errorDom) errorDom.textContent = e.message || e;
+			
 			this.#updateDisplayByResult()
-			runner.run(false,e)
+			runner.run(false)
 			const codeElement = this.#dom.querySelector('code');
 			if (codeElement) Prism.highlightElement(codeElement);
-
 		}
 	}
 	#updateDisplayByResult(){
-		this.#dom.querySelector('.red-unit-test-code-wrap').style.display = this.#openYn ? '' : 'none'
-		this.#dom.querySelector('.red-unit-test-wrap').style.background = `${this.#isPass ? '' : '#2d0000'}`;
-		this.#dom.querySelector('.red-unit-test-title-open-close').innerHTML = `${this.#openYn ? 'close' : 'open'}`;
+		const codeWrap = this.#dom.querySelector('.red-unit-test-code-wrap') as HTMLElement;
+		if (codeWrap) codeWrap.style.display = this.#openYn ? '' : 'none';
+		
+		const testWrap = this.#dom.querySelector('.red-unit-test-wrap') as HTMLElement;
+		if (testWrap) testWrap.style.background = `${this.#isPass ? '' : '#2d0000'}`;
+		
+		const openClose = this.#dom.querySelector('.red-unit-test-title-open-close');
+		if (openClose) openClose.innerHTML = `${this.#openYn ? 'close' : 'open'}`;
 	}
 
 	determinePassFailAndDispatchEvent(isPass: boolean) {
@@ -91,17 +111,18 @@ class UnitTest {
 		`;
 		document.body.appendChild(this.#dom);
 
-		this.#dom.querySelector('.red-unit-test-title-wrap').addEventListener('click',()=>{
-			this.#openYn = !this.#openYn
-			this.#updateDisplayByResult()
-		})
+		const titleWrap = this.#dom.querySelector('.red-unit-test-title-wrap');
+		if (titleWrap) {
+			titleWrap.addEventListener('click',()=>{
+				this.#openYn = !this.#openYn
+				this.#updateDisplayByResult()
+			})
+		}
 	}
 }
 
 function formatCodeSnippet(input: string): string {
-	const options = {};
-	const highlightedCode = input
-	return `<code class="language-javascript">${highlightedCode}</code>`;
+	return `<code class="language-javascript">${input}</code>`;
 }
 
 
