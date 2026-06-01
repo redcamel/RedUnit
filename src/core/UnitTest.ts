@@ -44,7 +44,8 @@ class UnitTest {
 				this.#dom.querySelector('.error').textContent = error
 				this.#updateDisplayByResult()
 				runner.run(this.#isPass)
-				Prism.highlightAll()
+				const codeElement = this.#dom.querySelector('code');
+				if (codeElement) Prism.highlightElement(codeElement);
 			});
 		}catch (e) {
 			this.#openYn = true;
@@ -54,7 +55,8 @@ class UnitTest {
 			this.#dom.querySelector('.error').textContent = e
 			this.#updateDisplayByResult()
 			runner.run(false,e)
-			Prism.highlightAll()
+			const codeElement = this.#dom.querySelector('code');
+			if (codeElement) Prism.highlightElement(codeElement);
 
 		}
 	}
