@@ -47,7 +47,13 @@ class GroupRunner {
 		this.#ingIndex++
 		this.#redUnit.updateState(passYn)
 		if (this.#ingIndex < this.#list.length) {
-			this.#next()
+			if (this.#ingIndex % 50 === 0) {
+				requestAnimationFrame(() => {
+					this.#next()
+				})
+			} else {
+				this.#next()
+			}
 		}
 	}
 
