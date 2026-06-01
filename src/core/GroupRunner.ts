@@ -14,7 +14,7 @@ class GroupRunner {
 	#redUnit: RedUnit
 	#groupTitle: string
 
-	constructor(redUnit: RedUnit, groupTitle: string, initFunc) {
+	constructor(redUnit: RedUnit, groupTitle: string, initFunc:any) {
 		this.#redUnit = redUnit
 		this.#groupTitle = groupTitle
 		this.#rootDom = createDomElement('red-unit-test-runner-root')
@@ -31,7 +31,7 @@ class GroupRunner {
 		this.#next()
 	}
 
-	defineTest = (title, testFunc, expectValue) => {
+	defineTest = (title:String, testFunc:any, expectValue:any) => {
 		const t0 = new UnitTest(title, testFunc, expectValue)
 		this.#list.push(t0)
 		this.#testContainerDom.appendChild(t0.dom)
@@ -47,9 +47,7 @@ class GroupRunner {
 		this.#ingIndex++
 		this.#redUnit.updateState(passYn)
 		if (this.#ingIndex < this.#list.length) {
-			requestAnimationFrame(()=>{
-				this.#next()
-			})
+			this.#next()
 		}
 	}
 
